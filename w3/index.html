@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 爆笑迷因製造機 MEME GENERATOR 3000 🔥</title>
+    
+    <!-- 引入 Google Fonts 迷因經典風格字體 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bungee&family=Noto+Sans+TC:wght@700;900&display=swap" rel="stylesheet">
+    
+    <!-- 引入 FontAwesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 引入 html2canvas 截圖下載庫 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* 全局變數：流行迷因螢光配色 */
+        :root {
+            --neon-green: #00ff66;
+            --neon-pink: #ff007f;
+            --neon-yellow: #ffff00;
+            --neon-cyan: #00f0ff;
+            --bg-dark: #121218;
+            --card-bg: #1e1e28;
+            --panel-border: 4px solid #000;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans TC', 'Anton', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 1.5rem 1rem;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(255, 0, 127, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(0, 255, 102, 0.2) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        /* 標題與 Header */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .main-title {
+            font-family: 'Bungee', cursive, 'Noto Sans TC';
+            font-size: 2.8rem;
+            color: var(--neon-yellow);
+            text-shadow: 4px 4px 0px #000, -2px -2px 0px var(--neon-pink);
+            letter-spacing: 2px;
+            transform: rotate(-1.5deg);
+            display: inline-block;
+        }
+
+        .subtitle {
+            color: var(--neon-cyan);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* 主容器：Responsive 響應式佈局 (桌機左右、手機上下) */
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* 左側：控制面板 */
+        .control-panel {
+            background: var(--card-bg);
+            border: var(--panel-border);
+            box-shadow: 8px 8px 0px var(--neon-pink);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .panel-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: var(--neon-green);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 900;
+        }
+
+        /* 檔案上傳按鈕樣式 */
+        .file-upload-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: var(--neon-green);
+            color: #000;
+            font-weight: 900;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 3px solid #000;
+            box-shadow: 3px 3px 0px #000;
+            transition: all 0.2s;
+        }
+
+        .file-upload-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px #000;
+            background: #33ff88;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* 預設迷因快速切換區 */
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .preset-btn {
+            background: #2a2a38;
+            border: 2px solid #444;
+            color: #fff;
+            padding: 0.4rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+            transform: scale(1.05);
+        }
+
+        /* 表單控制項 (Input & Slider) */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            color: #ccc;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.7rem;
+            background: #101015;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            box-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--neon-pink);
+            cursor: pointer;
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: 2px solid #000;
+            border-radius: 6px;
+            width: 100%;
+            height: 35px;
+            cursor: pointer;
+            background: none;
+        }
+
+        /* 貼紙按鈕組 */
+        .sticker-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .sticker-btn {
+            background: #2b2b3a;
+            border: 2px solid #555;
+            font-size: 1.3rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sticker-btn:hover {
+            border-color: var(--neon-yellow);
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        /* 下載按鈕 (大粗框風格) */
+        .download-btn {
+            background: var(--neon-pink);
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 900;
+            padding: 1rem;
+            border: 4px solid #000;
+            border-radius: 12px;
+            box-shadow: 5px 5px 0px #000;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .download-btn:hover {
+            background: #ff3399;
+            transform: translate(-3px, -3px);
+            box-shadow: 8px 8px 0px #000;
+        }
+
+        .download-btn:active {
+            transform: translate(0px, 0px);
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        /* 右側：迷因預覽區 */
+        .preview-panel {
+            position: sticky;
+            top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .preview-title {
+            font-size: 1.2rem;
+            color: var(--neon-yellow);
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* 迷因截圖核心卡片區塊 */
+        .meme-canvas-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            background: #000;
+            border: var(--panel-border);
+            box-shadow: 8px 8px 0px var(--neon-cyan);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        .meme-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        /* 迷因文字共通樣式 */
+        .meme-text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            text-align: center;
+            font-family: 'Anton', 'Impact', 'Noto Sans TC', sans-serif;
+            text-transform: uppercase;
+            word-break: break-word;
+            line-height: 1.1;
+            cursor: move;
+            z-index: 10;
+        }
+
+        /* 預設上方與下方文字位置 */
+        #textTopDisplay {
+            top: 5%;
+        }
+
+        #textBottomDisplay {
+            bottom: 5%;
+        }
+
+        /* 可拖曳貼紙樣式 */
+        .draggable-sticker {
+            position: absolute;
+            font-size: 3rem;
+            cursor: grab;
+            z-index: 20;
+            user-select: none;
+            line-height: 1;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.6));
+        }
+
+        .draggable-sticker:active {
+            cursor: grabbing;
+        }
+
+        .sticker-delete {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .draggable-sticker:hover .sticker-delete {
+            display: flex;
+        }
+
+        /* 手機版 (RWD 響應式優化) */
+        @media (max-width: 850px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-panel {
+                position: relative;
+                top: 0;
+                order: -1; /* 手機版將預覽區移到上方 */
+            }
+
+            .main-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="main-title">🔥 MEME GENERATOR 3000 🔥</h1>
+        <p class="subtitle">【 搞笑流行迷因產生器 // 一鍵下載爆款圖片 】</p>
+    </header>
+
+    <div class="app-container">
+        <section class="control-panel">
+            
+            <!-- 1. 圖片選擇區 -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <i class="fa-solid fa-image"></i> 1. 選擇迷因底圖
+                </div>
+                <!-- 本機圖片上傳 input (避開 CORS 錯誤) -->
+                <label for="imageLoader" class="file-upload-btn">
+                    <i class="fa-solid fa-upload"></i> 上傳你的搞笑圖片 (Upload)
+                </label>
+                <input type="file" id="imageLoader" accept="image/*">
+
+                <p style="font-size: 0.8rem; color: #aaa; margin-top: 0.8rem;">或快速選擇內建熱門迷因：</p>
+                <div class="preset-grid">
+                    <button class="preset-btn" onclick="loadPresetMeme('doge')">🐕 Doge 狗</button>
+                    <button class="preset-btn" onclick="loadPresetMeme('cat')">🐱 驚訝貓</button>
+                    <button class="preset-btn" onclick="loadPresetMeme('laser')">👀 鐳射眼</button>
+                    <button class="preset-btn" onclick="loadPresetMeme('brain')">🧠 宇宙腦</button>
+                </div>
+            </div>
+
+            <!-- 2. 文字輸入與控制區 -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <i class="fa-solid fa-font"></i> 2. 編輯迷因文字
+                </div>
+                
+                <!-- 上方文字輸入 -->
+                <div class="input-group">
+                    <label>上方文字 (Top Text)</label>
+                    <input type="text" id="textTopInput" value="當你寫的程式碼" placeholder="輸入上方文字...">
+                </div>
+
+                <!-- 下方文字輸入 -->
+                <div class="input-group">
+                    <label>下方文字 (Bottom Text)</label>
+                    <input type="text" id="textBottomInput" value="一次就順利執行過關" placeholder="輸入下方文字...">
+                </div>
+
+                <!-- 字體大小控制 -->
+                <div class="input-group">
+                    <label>字體大小 (Font Size): <span id="fontSizeVal">36px</span></label>
+                    <input type="range" id="fontSizeRange" min="16" max="72" value="36">
+                </div>
+
+                <!-- 位置控制 sliders -->
+                <div class="control-row">
+                    <div class="input-group">
+                        <label>上方文字垂直位置</label>
+                        <input type="range" id="topPosY" min="0" max="80" value="5">
+                    </div>
+                    <div class="input-group">
+                        <label>下方文字垂直位置</label>
+                        <input type="range" id="bottomPosY" min="0" max="80" value="5">
+                    </div>
+                </div>
+
+                <!-- 文字旋轉與色彩樣式 -->
+                <div class="control-row">
+                    <div class="input-group">
+                        <label>文字顏色</label>
+                        <input type="color" id="textColor" value="#ffffff">
+                    </div>
+                    <div class="input-group">
+                        <label>描邊顏色</label>
+                        <input type="color" id="strokeColor" value="#000000">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>黑邊描邊粗細: <span id="strokeWidthVal">3px</span></label>
+                    <input type="range" id="strokeWidthRange" min="1" max="8" value="3">
+                </div>
+            </div>
+
+            <!-- 3. 搞笑貼紙專區 -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <i class="fa-solid fa-icons"></i> 3. 新增搞笑貼圖 (點擊加入)
+                </div>
+                <div class="sticker-options">
+                    <button class="sticker-btn" onclick="addSticker('🕶️')">🕶️ 墨鏡</button>
+                    <button class="sticker-btn" onclick="addSticker('😂')">😂 哭笑</button>
+                    <button class="sticker-btn" onclick="addSticker('🔥')">🔥 火焰</button>
+                    <button class="sticker-btn" onclick="addSticker('✨')">✨ 閃耀</button>
+                    <button class="sticker-btn" onclick="addSticker('💥')">💥 爆炸</button>
+                    <button class="sticker-btn" onclick="addSticker('👑')">👑 皇冠</button>
+                    <button class="sticker-btn" onclick="clearStickers()" style="background: #aa2222; color: #fff;">🗑️ 清除貼紙</button>
+                </div>
+            </div>
+
+            <!-- 4. 下載按鈕 -->
+            <button class="download-btn" id="downloadBtn">
+                <i class="fa-solid fa-download"></i> 🚀 下載迷因 (my-meme.png)
+            </button>
+
+        </section>
+
+        <section class="preview-panel">
+            <div class="preview-title">
+                <i class="fa-solid fa-eye"></i> 即時預覽 (LIVE PREVIEW)
+            </div>
+
+            <!-- 迷因截圖目標容器區塊 -->
+            <div class="meme-canvas-wrapper" id="memeContainer">
+                <!-- 迷因底圖 -->
+                <img id="memeImage" class="meme-img" src="" alt="Meme Background">
+
+                <!-- 上方文字顯示層 -->
+                <div id="textTopDisplay" class="meme-text">當你寫的程式碼</div>
+
+                <!-- 下方文字顯示層 -->
+                <div id="textBottomDisplay" class="meme-text">一次就順利執行過關</div>
+            </div>
+            
+            <p style="font-size: 0.8rem; color: #888; margin-top: 0.8rem;">
+                💡 提示：貼紙加入後可以在圖片上隨意拖曳擺放位置喔！
+            </p>
+        </section>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. DOM 元素選取 (取得頁面上的控制元件)
+        // ==========================================
+        const imageLoader = document.getElementById('imageLoader');
+        const memeImage = document.getElementById('memeImage');
+        const memeContainer = document.getElementById('memeContainer');
+
+        const textTopInput = document.getElementById('textTopInput');
+        const textBottomInput = document.getElementById('textBottomInput');
+        const textTopDisplay = document.getElementById('textTopDisplay');
+        const textBottomDisplay = document.getElementById('textBottomDisplay');
+
+        const fontSizeRange = document.getElementById('fontSizeRange');
+        const fontSizeVal = document.getElementById('fontSizeVal');
+        const topPosY = document.getElementById('topPosY');
+        const bottomPosY = document.getElementById('bottomPosY');
+
+        const textColor = document.getElementById('textColor');
+        const strokeColor = document.getElementById('strokeColor');
+        const strokeWidthRange = document.getElementById('strokeWidthRange');
+        const strokeWidthVal = document.getElementById('strokeWidthVal');
+
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        // ==========================================
+        // 2. 初始化與預設迷因圖繪製 (Canvas 生成 Data URL 避開 CORS)
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPresetMeme('doge'); // 開局預設載入 Doge 柴犬圖
+            updateTextStyle(); // 初始化文字樣式
+        });
+
+        // 動態生成各種預設迷因圖（使用 SVG Data URI，100% 免外部圖源）
+        function loadPresetMeme(type) {
+            let svgString = '';
+            
+            if (type === 'doge') {
+                // 柴犬風格黃色背景 + 狗頭圖示
+                svgString = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="600" height="500" viewBox="0 0 600 500">
+                    <rect width="600" height="500" fill="#e1b12c"/>
+                    <circle cx="300" cy="230" r="140" fill="#fbc531"/>
+                    <circle cx="250" cy="200" r="20" fill="#fff"/>
+                    <circle cx="350" cy="200" r="20" fill="#fff"/>
+                    <circle cx="250" cy="200" r="8" fill="#000"/>
+                    <circle cx="350" cy="200" r="8" fill="#000"/>
+                    <ellipse cx="300" cy="250" rx="30" ry="20" fill="#000"/>
+                    <text x="300" y="420" font-family="sans-serif" font-size="40" font-weight="bold" fill="#ffffff" text-anchor="middle">MUCH WOW / VERY MEME</text>
+                </svg>`;
+            } else if (type === 'cat') {
+                // 驚訝紫粉底貓貓
+                svgString = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="600" height="500" viewBox="0 0 600 500">
+                    <rect width="600" height="500" fill="#8c7ae6"/>
+                    <polygon points="180,100 240,220 150,200" fill="#442a9d"/>
+                    <polygon points="420,100 450,200 360,220" fill="#442a9d"/>
+                    <circle cx="300" cy="270" r="130" fill="#f5f6fa"/>
+                    <ellipse cx="230" cy="240" rx="30" ry="40" fill="#44bd32"/>
+                    <ellipse cx="370" cy="240" rx="30" ry="40" fill="#44bd32"/>
+                    <circle cx="230" cy="240" r="15" fill="#000"/>
+                    <circle cx="370" cy="240" r="15" fill="#000"/>
+                    <ellipse cx="300" cy="320" rx="25" ry="35" fill="#2f3640"/>
+                </svg>`;
+            } else if (type === 'laser') {
+                // 發光鐳射眼酷炫黑紅背景
+                svgString = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="600" height="500" viewBox="0 0 600 500">
+                    <rect width="600" height="500" fill="#1e272e"/>
+                    <circle cx="300" cy="250" r="120" fill="#d2dae2"/>
+                    <line x1="240" y1="230" x2="0" y2="100" stroke="#ff4d4d" stroke-width="12"/>
+                    <line x1="360" y1="230" x2="600" y2="100" stroke="#ff4d4d" stroke-width="12"/>
+                    <circle cx="240" cy="230" r="25" fill="#ff4d4d"/>
+                    <circle cx="360" cy="230" r="25" fill="#ff4d4d"/>
+                </svg>`;
+            } else if (type === 'brain') {
+                // 漸層宇宙大腦
+                svgString = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="600" height="500" viewBox="0 0 600 500">
+                    <defs>
+                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00a8ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#9c88ff;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <rect width="600" height="500" fill="url(#grad)"/>
+                    <circle cx="300" cy="250" r="110" fill="#f5f6fa" opacity="0.9"/>
+                    <text x="300" y="270" font-family="sans-serif" font-size="90" text-anchor="middle">🧠</text>
+                </svg>`;
+            }
+
+            // 將 SVG 轉化為 Data URL 賦予 <img>
+            memeImage.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svgString);
+        }
+
+        // ==========================================
+        // 3. 本機圖片上傳處理 (FileReader 防 CORS 錯誤)
+        // ==========================================
+        imageLoader.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                // 檔案讀取完成後觸發
+                reader.onload = function(event) {
+                    memeImage.src = event.target.result; // 將 base64 結果做為圖片路徑
+                };
+                reader.readAsDataURL(file); // 讀取為 Data URL 格式
+            }
+        });
+
+        // ==========================================
+        // 4. 文字即時同步與樣式控制邏輯
+        // ==========================================
+        
+        // 即時同步文字輸入
+        textTopInput.addEventListener('input', () => {
+            textTopDisplay.innerText = textTopInput.value || '';
+        });
+
+        textBottomInput.addEventListener('input', () => {
+            textBottomDisplay.innerText = textBottomInput.value || '';
+        });
+
+        // 更新文字樣式 (大小、顏色、黑邊 shadow)
+        function updateTextStyle() {
+            const size = fontSizeRange.value;
+            const color = textColor.value;
+            const strokeClr = strokeColor.value;
+            const strokeW = strokeWidthRange.value;
+
+            fontSizeVal.innerText = `${size}px`;
+            strokeWidthVal.innerText = `${strokeW}px`;
+
+            // 設定文字大小與顏色
+            [textTopDisplay, textBottomDisplay].forEach(el => {
+                el.style.fontSize = `${size}px`;
+                el.style.color = color;
+                
+                // 使用多重 text-shadow 打造完美的粗描邊效果 (全瀏覽器相容)
+                const w = parseInt(strokeW);
+                el.style.textShadow = `
+                    -${w}px -${w}px 0 ${strokeClr},
+                     ${w}px -${w}px 0 ${strokeClr},
+                    -${w}px  ${w}px 0 ${strokeClr},
+                     ${w}px  ${w}px 0 ${strokeClr},
+                     0px     ${w}px 0 ${strokeClr},
+                     0px    -${w}px 0 ${strokeClr},
+                    -${w}px  0px    0 ${strokeClr},
+                     ${w}px  0px    0 ${strokeClr}
+                `;
+            });
+
+            // 控制垂直位置 (% 數)
+            textTopDisplay.style.top = `${topPosY.value}%`;
+            textBottomDisplay.style.bottom = `${bottomPosY.value}%`;
+        }
+
+        // 為所有控制元件繫結事件監聽器
+        fontSizeRange.addEventListener('input', updateTextStyle);
+        topPosY.addEventListener('input', updateTextStyle);
+        bottomPosY.addEventListener('input', updateTextStyle);
+        textColor.addEventListener('input', updateTextStyle);
+        strokeColor.addEventListener('input', updateTextStyle);
+        strokeWidthRange.addEventListener('input', updateTextStyle);
+
+        // ==========================================
+        // 5. 搞笑貼紙功能與拖曳互動 (Drag & Drop)
+        // ==========================================
+        function addSticker(emoji) {
+            const sticker = document.createElement('div');
+            sticker.className = 'draggable-sticker';
+            sticker.innerText = emoji;
+            sticker.style.left = '45%';
+            sticker.style.top = '45%';
+
+            // 貼紙刪除小按鈕
+            const delBtn = document.createElement('div');
+            delBtn.className = 'sticker-delete';
+            delBtn.innerText = '×';
+            delBtn.onclick = (e) => {
+                e.stopPropagation();
+                sticker.remove();
+            };
+            sticker.appendChild(delBtn);
+
+            // 註冊滑鼠/觸控拖曳事件
+            makeDraggable(sticker);
+
+            memeContainer.appendChild(sticker);
+        }
+
+        function clearStickers() {
+            const stickers = document.querySelectorAll('.draggable-sticker');
+            stickers.forEach(s => s.remove());
+        }
+
+        // 使元素可於預覽容器內自由拖曳
+        function makeDraggable(element) {
+            let isDragging = false;
+            let currentX, currentY, initialX, initialY;
+
+            element.addEventListener('mousedown', dragStart);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', dragEnd);
+
+            // 支援手機觸控 (Touch Events)
+            element.addEventListener('touchstart', dragStart);
+            document.addEventListener('touchmove', drag);
+            document.addEventListener('touchend', dragEnd);
+
+            function dragStart(e) {
+                if (e.type === 'touchstart') {
+                    initialX = e.touches[0].clientX - element.offsetLeft;
+                    initialY = e.touches[0].clientY - element.offsetTop;
+                } else {
+                    initialX = e.clientX - element.offsetLeft;
+                    initialY = e.clientY - element.offsetTop;
+                }
+                isDragging = true;
+            }
+
+            function drag(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    if (e.type === 'touchmove') {
+                        currentX = e.touches[0].clientX - initialX;
+                        currentY = e.touches[0].clientY - initialY;
+                    } else {
+                        currentX = e.clientX - initialX;
+                        currentY = e.clientY - initialY;
+                    }
+
+                    element.style.left = `${currentX}px`;
+                    element.style.top = `${currentY}px`;
+                }
+            }
+
+            function dragEnd() {
+                isDragging = false;
+            }
+        }
+
+        // ==========================================
+        // 6. html2canvas 一鍵截圖下載迷因圖
+        // ==========================================
+        downloadBtn.addEventListener('click', () => {
+            // 下載前隱藏貼紙的刪除鈕，確保畫面乾淨
+            const deleteBtns = document.querySelectorAll('.sticker-delete');
+            deleteBtns.forEach(btn => btn.style.display = 'none');
+
+            // 呼叫 html2canvas 截取 memeContainer 區塊
+            html2canvas(memeContainer, {
+                scale: 2, // 提高解析度畫質
+                useCORS: true,
+                backgroundColor: null
+            }).then(canvas => {
+                // 將 Canvas 轉換為圖片下載連結
+                const link = document.createElement('a');
+                link.download = 'my-meme.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                // 恢復刪除按鈕顯示
+                deleteBtns.forEach(btn => btn.style.display = '');
+            }).catch(err => {
+                console.error('截圖匯出失敗:', err);
+                alert('下載失敗，請嘗試使用本機圖片再試一次！');
+            });
+        });
+    </script>
+</body>
+</html>
