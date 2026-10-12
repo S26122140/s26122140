@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACADEMIC QUEST HUB // Y2K PORTFOLIO</title>
+    <!-- Google Fonts: Orbitron & Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #060814;
+            --cyber-neon-cyan: #00f0ff;
+            --cyber-neon-pink: #ff007f;
+            --cyber-neon-purple: #9d00ff;
+            --cyber-neon-yellow: #ffe600;
+            --glass-bg: rgba(16, 20, 38, 0.55);
+            --glass-border: rgba(0, 240, 255, 0.25);
+            --glass-locked: rgba(255, 255, 255, 0.03);
+            --text-glow-cyan: 0 0 10px rgba(0, 240, 255, 0.7), 0 0 20px rgba(0, 240, 255, 0.5);
+            --text-glow-pink: 0 0 10px rgba(255, 0, 127, 0.7), 0 0 20px rgba(255, 0, 127, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Y2K Grid Background Effect */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: 
+                radial-gradient(circle at 50% 20%, rgba(157, 0, 255, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 10% 70%, rgba(255, 0, 127, 0.15) 0%, transparent 50%);
+        }
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        }
+
+        /* CRT Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 100;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+            opacity: 0.6;
+        }
+
+        /* Main Wrapper */
+        .container {
+            width: 100%;
+            max-width: 1050px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.5rem;
+            z-index: 1;
+        }
+
+        /* Header Profile Card */
+        .profile-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 240, 255, 0.2),
+                        inset 0 0 15px rgba(0, 240, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(0, 240, 255, 0.1),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: glossSweep 6s infinite linear;
+        }
+
+        @keyframes glossSweep {
+            0% { transform: translateY(-100%) rotate(45deg); }
+            100% { transform: translateY(100%) rotate(45deg); }
+        }
+
+        /* Avatar Styling */
+        .avatar-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--cyber-neon-cyan);
+            box-shadow: 0 0 15px var(--cyber-neon-cyan);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Rotating Neon Ring */
+        .avatar-ring {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            border-radius: 50%;
+            border: 2px dashed var(--cyber-neon-pink);
+            animation: spin 12s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .profile-name {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #fff 0%, var(--cyber-neon-cyan) 50%, var(--cyber-neon-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .profile-title {
+            color: var(--cyber-neon-cyan);
+            font-size: 0.95rem;
+            letter-spacing: 3px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.3rem 1rem;
+            background: rgba(0, 240, 255, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .status-badge {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #00ff66;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00ff66;
+        }
+
+        /* Quest Hub Grid Section */
+        .section-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(0, 240, 255, 0.2);
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title span {
+            color: var(--cyber-neon-pink);
+            text-shadow: var(--text-glow-pink);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            width: 100%;
+        }
+
+        /* Quest Card (Base) */
+        .quest-card {
+            position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 1.25rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 135px;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Stage Number Indicator */
+        .stage-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quest-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        /* UNLOCKED QUEST BUTTONS (Weeks 1 & 2) */
+        .quest-card.unlocked {
+            border: 1px solid var(--cyber-neon-cyan);
+            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15),
+                        inset 0 0 10px rgba(0, 240, 255, 0.08);
+            cursor: pointer;
+        }
+
+        .quest-card.unlocked .stage-tag {
+            color: var(--cyber-neon-cyan);
+            text-shadow: 0 0 5px var(--cyber-neon-cyan);
+        }
+
+        .quest-card.unlocked .quest-title {
+            color: #ffffff;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Active/Unlocked Badge Icon */
+        .status-icon {
+            font-size: 0.85rem;
+        }
+
+        .quest-card.unlocked .status-icon {
+            color: var(--cyber-neon-cyan);
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* HOVER EFFECTS FOR UNLOCKED */
+        .quest-card.unlocked:hover {
+            transform: translateY(-6px) scale(1.03);
+            border-color: var(--cyber-neon-pink);
+            box-shadow: 0 10px 25px rgba(255, 0, 127, 0.35),
+                        inset 0 0 15px rgba(255, 0, 127, 0.2);
+            background: rgba(25, 18, 45, 0.75);
+        }
+
+        .quest-card.unlocked:hover .stage-tag {
+            color: var(--cyber-neon-pink);
+            text-shadow: 0 0 8px var(--cyber-neon-pink);
+        }
+
+        .quest-card.unlocked:hover .quest-title {
+            color: #ffffff;
+            text-shadow: 0 0 8px var(--cyber-neon-pink);
+        }
+
+        .quest-card.unlocked::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyber-neon-cyan), var(--cyber-neon-pink));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .quest-card.unlocked:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* LOCKED QUEST BUTTONS (Weeks 3 ~ 16) */
+        .quest-card.locked {
+            background: var(--glass-locked);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0.55;
+            cursor: not-allowed;
+            filter: grayscale(80%);
+        }
+
+        .quest-card.locked .stage-tag {
+            color: #7a829e;
+        }
+
+        .quest-card.locked .quest-title {
+            color: #7a829e;
+            font-weight: 400;
+        }
+
+        .quest-card.locked .status-icon {
+            color: #5a627d;
+        }
+
+        /* Locked Hover Effect (Slight shake & hint) */
+        .quest-card.locked:hover {
+            opacity: 0.75;
+            border-color: rgba(255, 255, 255, 0.15);
+            animation: lockShake 0.3s ease-in-out;
+        }
+
+        @keyframes lockShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-3px); }
+            40%, 80% { transform: translateX(3px); }
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .grid-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.85rem;
+            }
+
+            .profile-card {
+                padding: 1.75rem 1.25rem;
+            }
+
+            .profile-name {
+                font-size: 1.7rem;
+            }
+
+            .quest-card {
+                min-height: 120px;
+                padding: 1rem 0.85rem;
+            }
+
+            .quest-title {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background FX -->
+    <div class="cyber-bg"></div>
+    <div class="cyber-grid"></div>
+    <div class="scanlines"></div>
+
+    <div class="container">
+        <!-- Profile Card Header -->
+        <header class="profile-card">
+            <div class="avatar-container">
+                <div class="avatar-ring"></div>
+                <!-- 大頭貼預設圖片 -->
+                <img src="https://placehold.co/300x300/101426/00f0ff?text=AVATAR" alt="Profile Picture" class="avatar-img" id="userAvatar">
+            </div>
+            <h1 class="profile-name">吳秉宸</h1>
+            <div class="profile-title">
+                <span class="status-badge"></span>
+                Web Development Portfolio
+            </div>
+        </header>
+
+        <!-- Main Quest Grid Section -->
+        <main style="width: 100%;">
+            <div class="section-header">
+                <div class="section-title">
+                    <i class="fa-solid fa-gamepad"></i> QUEST <span>LEVELS</span>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--cyber-neon-cyan); opacity: 0.8;">
+                    <i class="fa-solid fa-unlock-keyhole"></i> 2 / 16 UNLOCKED
+                </div>
+            </div>
+
+            <div class="grid-container">
+                <!-- Week 1 (Unlocked) -->
+                <a href="w1/index.html" class="quest-card unlocked">
+                    <div class="stage-tag">
+                        <span>STAGE 01</span>
+                        <i class="fa-solid fa-bolt status-icon"></i>
+                    </div>
+                    <div class="quest-title">Week 1 - 數位名片</div>
+                </a>
+
+                <!-- Week 2 (Unlocked) -->
+                <a href="w2/index.html" class="quest-card unlocked">
+                    <div class="stage-tag">
+                        <span>STAGE 02</span>
+                        <i class="fa-solid fa-bolt status-icon"></i>
+                    </div>
+                    <div class="quest-title">Week 2 - 今天吃甚麼?</div>
+                </a>
+
+                <!-- Week 3 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 03</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 3 - 未解鎖</div>
+                </div>
+
+                <!-- Week 4 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 04</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 4 - 未解鎖</div>
+                </div>
+
+                <!-- Week 5 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 05</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 5 - 未解鎖</div>
+                </div>
+
+                <!-- Week 6 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 06</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 6 - 未解鎖</div>
+                </div>
+
+                <!-- Week 7 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 07</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 7 - 未解鎖</div>
+                </div>
+
+                <!-- Week 8 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 08</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 8 - 未解鎖</div>
+                </div>
+
+                <!-- Week 9 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 09</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 9 - 未解鎖</div>
+                </div>
+
+                <!-- Week 10 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 10</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 10 - 未解鎖</div>
+                </div>
+
+                <!-- Week 11 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 11</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 11 - 未解鎖</div>
+                </div>
+
+                <!-- Week 12 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 12</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 12 - 未解鎖</div>
+                </div>
+
+                <!-- Week 13 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 13</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 13 - 未解鎖</div>
+                </div>
+
+                <!-- Week 14 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 14</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 14 - 未解鎖</div>
+                </div>
+
+                <!-- Week 15 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 15</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 15 - 未解鎖</div>
+                </div>
+
+                <!-- Week 16 (Locked) -->
+                <div class="quest-card locked">
+                    <div class="stage-tag">
+                        <span>STAGE 16</span>
+                        <span class="status-icon">🔒</span>
+                    </div>
+                    <div class="quest-title">Week 16 - 未解鎖</div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2026 ACADEMIC PORTFOLIO // ALL RIGHTS RESERVED</p>
+        </footer>
+    </div>
+</body>
+</html>
