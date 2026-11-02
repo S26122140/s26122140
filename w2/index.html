@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今天吃什麼？隨機抽籤機</title>
+    <!-- FontAwesome 圖示庫 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts 字型 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti 彩帶特效庫 -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- 引入獨立 CSS 檔案 -->
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入獨立 JS 檔案 (使用 defer 確保載入順序) -->
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 頂部標題區 -->
+        <header>
+            <span class="badge"><i class="fa-solid fa-utensils"></i> 美食抽籤神器</span>
+            <h1 class="main-title" id="titleText">今天吃什麼?</h1>
+        </header>
+
+        <!-- 轉盤/跑馬燈顯示區 -->
+        <div class="slot-display" id="slotDisplay">
+            <span id="slotText">準備好抽籤了嗎？</span>
+        </div>
+
+        <!-- 抽籤結果卡片區 -->
+        <div class="result-card">
+            <div class="image-wrapper">
+                <img id="foodImage" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="美味食物" class="restaurant-img">
+                <div class="image-overlay">
+                    <span class="tag" id="categoryTag">隨機推薦</span>
+                </div>
+            </div>
+
+            <!-- 操作按鈕組 -->
+            <div class="btn-group">
+                <button class="primary-btn" id="drawBtn">
+                    <i class="fa-solid fa-dice"></i> 點我抽籤
+                </button>
+                <a href="#" target="_blank" class="map-btn disabled" id="mapBtn">
+                    <i class="fa-solid fa-location-dot" style="color: #60a5fa;"></i> 馬上出發 (開啟 Google Map)
+                </a>
+            </div>
+        </div>
+
+        <!-- 自訂餐廳清單區 -->
+        <div class="options-card">
+            <div class="options-header">
+                <span class="options-title"><i class="fa-solid fa-list-check"></i> 抽籤名單 (可自由新增或刪除)</span>
+            </div>
+            
+            <div class="add-box">
+                <input type="text" id="newOptionInput" class="add-input" placeholder="輸入自訂餐廳或食物..." maxlength="15">
+                <button class="add-btn" id="addBtn">新增</button>
+            </div>
+
+            <div class="tag-cloud" id="tagCloud">
+                <!-- 標籤將透過 JavaScript 動態生成 -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 今天吃什麼？隨機抽籤機 • 解決選擇困難症</p>
+    </footer>
+
+</body>
+</html>
