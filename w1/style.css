@@ -1,0 +1,110 @@
+/* 清除預設邊距並設定字型 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  /* 全頁背景：馬卡龍粉藍與冰藍色的柔和漸層 */
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  min-height: 100vh;
+  /* 使用 Flexbox 讓名片在畫面正中央置中 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* 卡片容器 */
+.card {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 24px; /* 現代感圓角 */
+  width: 100%;
+  max-width: 350px;
+  text-align: center; /* 內部內容全部置中 */
+  /* 精緻微陰影 (Soft Light Shadow) */
+  box-shadow: 0 10px 30px rgba(186, 230, 253, 0.4);
+  /* 浮動過渡效果 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 滑鼠移到卡片上時輕微浮起 */
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(14, 165, 233, 0.15);
+}
+
+/* 圓形大頭貼 */
+.avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%; /* 設為 50% 呈現完美正圓形 */
+  object-fit: cover;
+  margin-bottom: 16px;
+  /* 大頭貼外圈加一層薄薄的馬卡龍藍色圓框 */
+  border: 4px solid #e0f2fe;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* 名字樣式 */
+.name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b; /* 深灰藍色，質感比純黑更好 */
+  margin-bottom: 8px;
+}
+
+/* 自我介紹樣式 */
+.bio {
+  font-size: 0.95rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+/* 按鈕區域配置 */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* 按鈕間距 */
+}
+
+/* 按鈕基礎樣式 */
+.btn {
+  display: block;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 50px; /* 圓角膠囊形狀 */
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* Instagram 按鈕：天空粉藍 */
+.btn-instagram {
+  background-color: #48cde8;
+  color: #ca48db;
+  box-shadow: 0 4px 12px rgba(125, 211, 252, 0.4);
+}
+
+.btn-instagram:hover {
+  background-color: #38bdf8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(56, 189, 248, 0.45);
+}
+
+/* Email 按鈕：柔和灰藍/霧藍 */
+.btn-email {
+  background-color: #a5f3fc;
+  color: #0e7490;
+  box-shadow: 0 4px 12px rgba(165, 243, 252, 0.4);
+}
+
+.btn-email:hover {
+  background-color: #67e8f9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(103, 232, 249, 0.45);
+}
